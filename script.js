@@ -15,6 +15,18 @@ Create a "game" function to loop through five rounds.
 
 */
 
+
+for (let i = 0; i < 5; i++) {
+
+    let currentRound = i+1;
+    let playerChoice = "rock";
+    // let computerChoice = "scissors";
+    
+    console.log(`Round: ${currentRound}`)
+    console.log(playRound(getPlayerChoice(), getComputerChoice()));
+    console.log("");
+    }
+    
 function playRound (playerChoice, computerChoice) {
     playerChoice = makeLowerCase(playerChoice);
     computerChoice = makeLowerCase(computerChoice);
@@ -51,6 +63,9 @@ function playRound (playerChoice, computerChoice) {
         }
     }
 
+    console.log(`Player chose ${playerChoice}.`);
+    console.log(`Computer chose ${computerChoice}.`)
+
     if (playerWins === true) {
         return "Player Wins!";
     } else if (playerWins === false) {
@@ -65,9 +80,20 @@ function makeLowerCase(anyCaseString) {
     return lowerCaseString;
 }
 
-let playerChoice = "rock";
-let computerChoice = "scissors";
+function getPlayerChoice() {
+    playerChoice = prompt("Rock, Paper, or Scissors?");
+    return playerChoice;
+}
 
-console.log(playRound(playerChoice, computerChoice));
+function getComputerChoice () {
+    let randomNum = Math.random()*100
 
-// function getComputerChoice () {}
+    if (randomNum < 33) {
+        computerChoice = "rock";
+    } else if (randomNum < 66) {
+        computerChoice = "paper";
+    } else {
+        computerChoice = "scissors";
+    }
+    return computerChoice;
+}
