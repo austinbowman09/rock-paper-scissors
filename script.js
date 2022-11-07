@@ -1,37 +1,46 @@
-/* 
-Pseudocode:
+console.log("First player to reach three points wins the game!")
 
-Start a new game
+let round = 1;
+let playerPoints = 0;
+let computerPoints = 0;
+let keepGoing = true;
+let roundWinner;
 
-Ask the user for a choice (rock, paper, or scissors). 
-Make everything lower case (so that the choice is case insensitive)
-Store the result.
-
-Generate a random choice for the computer.
-
-Compare the two choices and determine a winner. This is one round.
-
-Create a "game" function to loop through five rounds. 
-
-*/
-
-
-for (let i = 0; i < 5; i++) {
-
-    let currentRound = i+1;
-    let playerChoice = "rock";
-    // let computerChoice = "scissors";
-    
-    console.log(`Round: ${currentRound}`)
-    console.log(playRound(getPlayerChoice(), getComputerChoice()));
+while (keepGoing === true) {
     console.log("");
-    }
-    
-function playRound (playerChoice, computerChoice) {
-    playerChoice = makeLowerCase(playerChoice);
-    computerChoice = makeLowerCase(computerChoice);
+    console.log(`Round: ${round}`)
+    console.log(`The score is ${playerPoints} to ${computerPoints} (player / computer)`)
+    roundWinner = playRound();
 
-    let playerWins
+    if (roundWinner === "Player") {
+        playerPoints++
+        console.log("Player wins the round!");
+    } else if (roundWinner === "Computer") {
+        computerPoints++
+        console.log("Computer wins the round!");
+    } else if (roundWinner === "Tie") {
+        console.log("Tie. Play again.");
+    }
+
+    if (playerPoints >= 3) {
+        keepGoing = false;
+        console.log("");
+        console.log("The player has won the game!")
+        console.log(`Final score: ${playerPoints} to ${computerPoints} (player / computer)`)
+    } else if (computerPoints >= 3) {
+        keepGoing = false;
+        console.log("");
+        console.log("The computer has won the game!")
+        console.log(`Final score: ${playerPoints} to ${computerPoints} (player / computer)`)
+    }
+    round++
+}
+
+function playRound () {
+
+    let playerChoice = makeLowerCase(getPlayerChoice());
+    let computerChoice = makeLowerCase(getComputerChoice());
+    let winner;
 
     if (!((playerChoice === "rock" || playerChoice === "paper" || playerChoice === "scissors") && (computerChoice === "rock" || computerChoice === "paper" ||computerChoice === "scissors"))) {
         console.error("Choices are invalid. Only accepts rock, paper, or scissors.");
@@ -39,40 +48,33 @@ function playRound (playerChoice, computerChoice) {
 
     if (playerChoice === "rock") {
         if (computerChoice === "rock") {
-            playerWins = "tie";
+            winner = "Tie";
         } else if (computerChoice === "paper") {
-            playerWins = false;
+            winner = "Computer";
         } else if (computerChoice === "scissors") {
-            playerWins = true;
+            winner = "Player";
         }
     } else if (playerChoice === "paper") {
         if (computerChoice === "rock") {
-            playerWins = true;
+            winner = "Player";
         } else if (computerChoice === "paper") {
-            playerWins = "tie";
+            winner = "Tie";
         } else if (computerChoice === "scissors") {
-            playerWins = false;
+            winner = "Computer";
         }
     } else if (playerChoice === "scissors") {
         if (computerChoice === "rock") {
-            playerWins = false;
+            winner = "Computer";
         } else if (computerChoice === "paper") {
-            playerWins = true;
+            winner = "Player";
         } else if (computerChoice === "scissors") {
-            playerWins = "tie";
+            winner = "Tie";
         }
     }
 
     console.log(`Player chose ${playerChoice}.`);
     console.log(`Computer chose ${computerChoice}.`)
-
-    if (playerWins === true) {
-        return "Player Wins!";
-    } else if (playerWins === false) {
-        return "Computer Wins!";
-    } else if (playerWins === "tie") {
-        return "Tie. No Winner.";
-    }
+    return winner;
 }
 
 function makeLowerCase(anyCaseString) {
