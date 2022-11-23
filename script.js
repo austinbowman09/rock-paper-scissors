@@ -1,10 +1,14 @@
-console.log("First player to reach three points wins the game!")
-
-let round = 1;
+let currentRound = 1;
 let roundsToWin = 3;
 let playerPoints = 0;
 let computerPoints = 0;
-let keepGoing = true;
+
+const roundText = document.querySelector("#round");
+const roundWinnerText = document.querySelector("#round-winner");
+const currentScoreText = document.querySelector("#score");
+const gameWinnerText = document.querySelector("#winner");
+const playerChoiceText = document.querySelector("#player-choice");
+const computerChoiceText = document.querySelector("#computer-choice");
 
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => {
@@ -14,37 +18,56 @@ buttons.forEach(button => {
     });
 });
 
-function updateScore(roundWinner) {
-    if (roundWinner == "Player") { 
-        playerPoints++;
-        console.log("Player wins the round!");
-        console.log("");
-    } else if (roundWinner == "Computer") {
-        computerPoints++;
-        console.log("Computer wins the round!");
-        console.log("");
-    } else if (roundWinner === "Tie") {
-        console.log("Tie. Play again.");
-        console.log("");
-    }
+const newGameButton = document.querySelector("#new-game");
+newGameButton.addEventListener("click", resetPage);
 
-    if (playerPoints >= roundsToWin) {
-        keepGoing = false;
-        console.log("The player has won the game!")
-        console.log(`Final score: ${playerPoints} to ${computerPoints} (player / computer)`)
-    } else if (computerPoints >= roundsToWin) {
-        keepGoing = false;
-        console.log("The computer has won the game!")
-        console.log(`Final score: ${playerPoints} to ${computerPoints} (player / computer)`)
-    }
+function resetPage() {
+    currentRound = 1;
+    playerPoints = 0;
+    computerPoints = 0;
+    roundText.textContent = "Round: "
+    playerChoiceText.textContent = "";
+    computerChoiceText.textContent = "";
+    roundWinnerText.textContent = "";
+    currentScoreText.textContent = "Current Score: ";
+    gameWinnerText.textContent = "Winner: ";
+    buttons.forEach(button => {
+        button.classList.remove("disabled");
+    });
 };
 
+function endGame() {
+    buttons.forEach(button => {
+        button.classList.add("disabled");
+    });
+};
+
+function updateScore(roundWinner) {
+    roundText.textContent = `Round: ${currentRound++}`;
+    if (roundWinner == "Player") { 
+        playerPoints++;
+        roundWinnerText.textContent = "Player wins the round!";
+    } else if (roundWinner == "Computer") {
+        computerPoints++;
+        roundWinnerText.textContent = "Computer wins the round!";
+    } else if (roundWinner === "Tie") {
+        roundWinnerText.textContent = "Tie. Play again.";
+    }
+    currentScoreText.textContent = `Current Score: ${playerPoints} to ${computerPoints} (player / computer)`;
+
+    if (playerPoints >= roundsToWin) {
+        gameWinnerText.textContent = "Winner: Player wins!"
+        endGame();
+    } else if (computerPoints >= roundsToWin) {
+        gameWinnerText.textContent = "Winner: Computer wins!"
+        endGame();
+    }
+};
 
 function playRound(choice) {
     let playerChoice = choice;
     let computerChoice = makeLowerCase(getComputerChoice());
     let winner;
-
     if (!((playerChoice === "rock" || playerChoice === "paper" || playerChoice === "scissors") && (computerChoice === "rock" || computerChoice === "paper" ||computerChoice === "scissors"))) {
         console.error("Choices are invalid. Only accepts rock, paper, or scissors.");
     }
@@ -74,9 +97,8 @@ function playRound(choice) {
             winner = "Tie";
         }
     }
-
-    console.log(`Player chose ${playerChoice}.`);
-    console.log(`Computer chose ${computerChoice}.`)
+    playerChoiceText.textContent = `Player chose ${playerChoice}.`;
+    computerChoiceText.textContent = `Computer chose ${computerChoice}.`;
     return winner;
 }
 
