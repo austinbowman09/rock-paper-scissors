@@ -1,44 +1,47 @@
 console.log("First player to reach three points wins the game!")
 
 let round = 1;
+let roundsToWin = 3;
 let playerPoints = 0;
 let computerPoints = 0;
 let keepGoing = true;
-let roundWinner;
 
-while (keepGoing === true) {
-    console.log("");
-    console.log(`Round: ${round}`)
-    console.log(`The score is ${playerPoints} to ${computerPoints} (player / computer)`)
-    roundWinner = playRound();
+const buttons = document.querySelectorAll(".button");
+buttons.forEach(button => {
+    button.addEventListener("click", function() {
+        let roundWinner = playRound(button.id);
+        updateScore(roundWinner);
+    });
+});
 
-    if (roundWinner === "Player") {
-        playerPoints++
+function updateScore(roundWinner) {
+    if (roundWinner == "Player") { 
+        playerPoints++;
         console.log("Player wins the round!");
-    } else if (roundWinner === "Computer") {
-        computerPoints++
+        console.log("");
+    } else if (roundWinner == "Computer") {
+        computerPoints++;
         console.log("Computer wins the round!");
+        console.log("");
     } else if (roundWinner === "Tie") {
         console.log("Tie. Play again.");
+        console.log("");
     }
 
-    if (playerPoints >= 3) {
+    if (playerPoints >= roundsToWin) {
         keepGoing = false;
-        console.log("");
         console.log("The player has won the game!")
         console.log(`Final score: ${playerPoints} to ${computerPoints} (player / computer)`)
-    } else if (computerPoints >= 3) {
+    } else if (computerPoints >= roundsToWin) {
         keepGoing = false;
-        console.log("");
         console.log("The computer has won the game!")
         console.log(`Final score: ${playerPoints} to ${computerPoints} (player / computer)`)
     }
-    round++
-}
+};
 
-function playRound () {
 
-    let playerChoice = makeLowerCase(getPlayerChoice());
+function playRound(choice) {
+    let playerChoice = choice;
     let computerChoice = makeLowerCase(getComputerChoice());
     let winner;
 
@@ -82,14 +85,8 @@ function makeLowerCase(anyCaseString) {
     return lowerCaseString;
 }
 
-function getPlayerChoice() {
-    playerChoice = prompt("Rock, Paper, or Scissors?");
-    return playerChoice;
-}
-
 function getComputerChoice () {
     let randomNum = Math.random()*100
-
     if (randomNum < 33) {
         computerChoice = "rock";
     } else if (randomNum < 66) {
