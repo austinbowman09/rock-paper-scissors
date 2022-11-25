@@ -1,5 +1,5 @@
 let currentRound = 1;
-let roundsToWin = 3;
+let roundsToWin = 5;
 let playerPoints = 0;
 let computerPoints = 0;
 
@@ -25,7 +25,7 @@ function resetPage() {
     currentRound = 1;
     playerPoints = 0;
     computerPoints = 0;
-    roundText.textContent = "Round: "
+    roundText.textContent = "Round: 1"
     playerChoiceText.textContent = "";
     computerChoiceText.textContent = "";
     roundWinnerText.textContent = "";
